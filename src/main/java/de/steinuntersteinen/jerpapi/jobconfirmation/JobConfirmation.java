@@ -2,5 +2,7 @@ package de.steinuntersteinen.jerpapi.jobconfirmation;
 
 import org.springframework.data.annotation.Id;
 
-public record JobConfirmation(@Id Long id, String correspondingFileName) {
+import java.util.UUID;
+
+public record JobConfirmation(@Id UUID id, String correspondingFileName) {
 }
