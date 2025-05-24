@@ -27,7 +27,12 @@ public class JobConfirmationPdfController {
     @PostMapping("/upload")
     private ResponseEntity<JobConfirmation> uploadJobConfirmationPdf(
             @RequestParam("file")MultipartFile file, UriComponentsBuilder ucb) throws URISyntaxException, IOException {
-        if (!"application/pdf".equals(file.getContentType()) || file.isEmpty()) {
+        if (
+                file == null
+                || !"application/pdf".equals(file.getContentType())
+                || file.isEmpty()
+                || !file.getOriginalFilename().endsWith(".pdf")
+        ) {
             return ResponseEntity.badRequest().build();
         }
 

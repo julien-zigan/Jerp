@@ -1,0 +1,2 @@
+This file should not be accepted as an upload via POST /api/jobconfirmations.
+Expected response on try is 400 BAD REQUEST.

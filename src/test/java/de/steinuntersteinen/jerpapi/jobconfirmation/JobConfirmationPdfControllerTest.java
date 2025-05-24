@@ -37,4 +37,36 @@ class JobConfirmationPdfControllerTest {
                 .andExpect(header().exists("Location"));
     }
 
+    @Test
+    void shouldReturnBadRequestWhenFileIsNotPdf(@Autowired MockMvc mvc) throws Exception {
+        Path testFile = Paths.get("src/test/resources/notAPdfDummy.txt");
+        String testFileName = testFile.getFileName().toString();
+
+        MockMultipartFile mockFile = new MockMultipartFile(
+                "file",
+                testFileName,
+                "application/pdf",
+                Files.readAllBytes(testFile)
+        );
+
+        mvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenContentTypeIsNotApplicationPdf(@Autowired MockMvc mvc) throws Exception {
+        Path testFile = Paths.get("src/test/resources/dummy.pdf");
+        String testFileName = testFile.getFileName().toString();
+
+        MockMultipartFile mockFile = new MockMultipartFile(
+                "file",
+                testFileName,
+                "application/json",
+                Files.readAllBytes(testFile)
+        );
+
+        mvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+                .andExpect(status().isBadRequest());
+    }
+
 }
