@@ -28,8 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class JobConfirmationPdfControllerTest {
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
     @Test
-    void shouldStorePdfFileInDatabase(@Autowired MockMvc mvc) throws Exception {
+    void shouldStorePdfFileInDatabase() throws Exception {
 
         Path testFile = Paths.get("src/test/resources/dummy.pdf");
         String testFileName = testFile.getFileName().toString();
@@ -41,13 +47,13 @@ class JobConfirmationPdfControllerTest {
                 Files.readAllBytes(testFile)
         );
 
-        mvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+        mockMvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
     }
 
     @Test
-    void shouldReturnBadRequestWhenFileIsNotPdf(@Autowired MockMvc mvc) throws Exception {
+    void shouldReturnBadRequestWhenFileIsNotPdf() throws Exception {
         Path testFile = Paths.get("src/test/resources/notAPdfDummy.txt");
         String testFileName = testFile.getFileName().toString();
 
@@ -58,12 +64,12 @@ class JobConfirmationPdfControllerTest {
                 Files.readAllBytes(testFile)
         );
 
-        mvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+        mockMvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void shouldReturnBadRequestWhenContentTypeIsNotApplicationPdf(@Autowired MockMvc mvc) throws Exception {
+    void shouldReturnBadRequestWhenContentTypeIsNotApplicationPdf() throws Exception {
         Path testFile = Paths.get("src/test/resources/dummy.pdf");
         String testFileName = testFile.getFileName().toString();
 
@@ -74,13 +80,12 @@ class JobConfirmationPdfControllerTest {
                 Files.readAllBytes(testFile)
         );
 
-        mvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+        mockMvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void shouldReturnJobConfirmationPdfMetadata(@Autowired JdbcTemplate jdbcTemplate,
-                                                @Autowired TestRestTemplate restTemplate) {
+    void shouldReturnJobConfirmationPdfMetadata(@Autowired JdbcTemplate jdbcTemplate) {
         JobConfirmationPdf testRecord = new JobConfirmationPdf(
                 UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
                 "testfile.pdf",
