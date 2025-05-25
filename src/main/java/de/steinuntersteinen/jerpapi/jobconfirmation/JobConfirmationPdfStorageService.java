@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class JobConfirmationPdfStorageService {
@@ -14,8 +16,16 @@ public class JobConfirmationPdfStorageService {
         this.repo = repo;
     }
 
-    public JobConfirmationPdf store(MultipartFile file) throws IOException {
-        return repo.save(new JobConfirmationPdf(null, file.getOriginalFilename(), file.getBytes()));
+    public UUID store(MultipartFile file) throws IOException {
+        return repo.save(new JobConfirmationPdf(
+                null,
+                file.getOriginalFilename(),
+                file.getBytes()))
+                .id();
+    }
+
+    public Optional<JobConfirmationPdf> get(UUID uuid) {
+        return repo.findById(uuid);
     }
 
 }
