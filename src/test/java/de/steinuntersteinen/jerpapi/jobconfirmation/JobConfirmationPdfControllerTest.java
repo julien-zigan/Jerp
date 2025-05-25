@@ -34,9 +34,10 @@ class JobConfirmationPdfControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private final String baseUri = "/api/jobconfirmations";
+
     @Test
     void shouldStorePdfFileInDatabase() throws Exception {
-
         Path testFile = Paths.get("src/test/resources/dummy.pdf");
         String testFileName = testFile.getFileName().toString();
 
@@ -47,7 +48,7 @@ class JobConfirmationPdfControllerTest {
                 Files.readAllBytes(testFile)
         );
 
-        mockMvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+        mockMvc.perform(multipart(baseUri + "/upload").file(mockFile))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
     }
@@ -64,7 +65,7 @@ class JobConfirmationPdfControllerTest {
                 Files.readAllBytes(testFile)
         );
 
-        mockMvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+        mockMvc.perform(multipart(baseUri + "/upload").file(mockFile))
                 .andExpect(status().isBadRequest());
     }
 
@@ -80,14 +81,16 @@ class JobConfirmationPdfControllerTest {
                 Files.readAllBytes(testFile)
         );
 
-        mockMvc.perform(multipart("/api/jobconfirmations/upload").file(mockFile))
+        mockMvc.perform(multipart(baseUri +"/upload").file(mockFile))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnJobConfirmationPdfMetadata(@Autowired JdbcTemplate jdbcTemplate) {
+        String uuidAsString = UUID.randomUUID().toString();
+
         JobConfirmationPdf testRecord = new JobConfirmationPdf(
-                UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
+                UUID.fromString(uuidAsString),
                 "testfile.pdf",
                 "MockData".getBytes(StandardCharsets.UTF_8)
         );
@@ -99,7 +102,7 @@ class JobConfirmationPdfControllerTest {
         );
 
         ResponseEntity<String> response = restTemplate.getForEntity(
-                "/api/jobconfirmations/123e4567-e89b-12d3-a456-426614174000",
+                baseUri + "/" + uuidAsString,
                 String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -115,7 +118,7 @@ class JobConfirmationPdfControllerTest {
     @Test
     void shouldReturnNotFoundWhenIdIsInvalid() {
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/jobconfirmations/1234", String.class);
+                restTemplate.getForEntity(baseUri + "/1234", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -123,7 +126,7 @@ class JobConfirmationPdfControllerTest {
     void shouldReturnNotFoundWhenIdDoesNotExist() {
         String nonExistentId = UUID.randomUUID().toString();
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/api/jobconfirmations/" + nonExistentId, String.class);
+                restTemplate.getForEntity(baseUri + "/" + nonExistentId, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
