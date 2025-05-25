@@ -112,4 +112,19 @@ class JobConfirmationPdfControllerTest {
         assertThat(filename).isEqualTo(testRecord.filename());
     }
 
+    @Test
+    void shouldReturnNotFoundWhenIdIsInvalid() {
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/jobconfirmations/1234", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenIdDoesNotExist() {
+        String nonExistentId = UUID.randomUUID().toString();
+        ResponseEntity<String> response =
+                restTemplate.getForEntity("/api/jobconfirmations/" + nonExistentId, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
 }

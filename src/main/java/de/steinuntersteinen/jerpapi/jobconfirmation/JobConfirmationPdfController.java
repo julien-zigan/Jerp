@@ -46,7 +46,12 @@ public class JobConfirmationPdfController {
 
     @GetMapping("/{id}")
     private ResponseEntity<JobConfirmationPdf> findJobConfirmationPdfMetadataById(@PathVariable("id") String id) {
-        UUID uuid = UUID.fromString(id);
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
         Optional<JobConfirmationPdf> jobConfirmationPdfOptional = storageService.get(uuid);
         return jobConfirmationPdfOptional
                 .map(ResponseEntity::ok)
