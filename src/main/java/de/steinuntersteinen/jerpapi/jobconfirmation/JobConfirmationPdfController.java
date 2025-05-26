@@ -12,8 +12,9 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequestMapping("/api/jobconfirmations")
 @RestController
+@CrossOrigin("http://localhost:5173")
+@RequestMapping("/api/jobconfirmations")
 public class JobConfirmationPdfController {
 
     private final JobConfirmationPdfStorageService storageService;
@@ -37,7 +38,7 @@ public class JobConfirmationPdfController {
 
         UUID id = storageService.store(file);
         URI locationOfStoredJobConfirmationPdf = ucb
-                .path("/api/confirmations/{id}")
+                .path("/api/jobconfirmations/{id}")
                 .buildAndExpand(id)
                 .toUri();
 
