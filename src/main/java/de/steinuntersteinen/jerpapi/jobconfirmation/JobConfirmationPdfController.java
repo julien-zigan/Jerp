@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(value = "http://localhost:5173", exposedHeaders = "Location")
 @RequestMapping("/api/jobconfirmations")
 public class JobConfirmationPdfController {
 
