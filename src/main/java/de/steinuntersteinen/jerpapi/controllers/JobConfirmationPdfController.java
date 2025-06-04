@@ -1,5 +1,8 @@
-package de.steinuntersteinen.jerpapi.jobconfirmation;
+package de.steinuntersteinen.jerpapi.controllers;
 
+import de.steinuntersteinen.jerpapi.model.jobconfirmation.JobConfirmation;
+import de.steinuntersteinen.jerpapi.model.jobconfirmation.JobConfirmationPdf;
+import de.steinuntersteinen.jerpapi.services.JobConfirmationPdfStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

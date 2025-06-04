@@ -1,5 +1,7 @@
-package de.steinuntersteinen.jerpapi.jobconfirmation;
+package de.steinuntersteinen.jerpapi.services;
 
+import de.steinuntersteinen.jerpapi.model.jobconfirmation.JobConfirmationPdf;
+import de.steinuntersteinen.jerpapi.repositories.JobConfirmationPdfRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

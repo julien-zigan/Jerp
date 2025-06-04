@@ -1,4 +1,4 @@
-package de.steinuntersteinen.jerpapi.jobconfirmation;
+package de.steinuntersteinen.jerpapi.model.jobconfirmation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;

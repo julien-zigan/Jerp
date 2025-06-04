@@ -1,4 +1,4 @@
-package de.steinuntersteinen.jerpapi.jobconfirmation;
+package de.steinuntersteinen.jerpapi.model.jobconfirmation;
 
 import org.springframework.data.annotation.Id;
 
