@@ -2,6 +2,7 @@ package de.steinuntersteinen.jerpapi.jobconfirmation;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import de.steinuntersteinen.jerpapi.model.jobconfirmation.JobConfirmationPdf;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
